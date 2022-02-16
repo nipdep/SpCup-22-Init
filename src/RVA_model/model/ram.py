@@ -269,7 +269,7 @@ class GlimpseNetwork(tf.keras.layers.Layer):
         tf.Tensor of the same type as image
             A 2-D Tensor of Shape [batch_size, 256] with type tf.float32
         """
-        glimpses = self.get_glimpses(image, loc, self.n_glimpses, self.glimpse_size)
+        glimpses = tf.stop_gradient(self.get_glimpses(image, loc, self.n_glimpses, self.glimpse_size))
         
         batch_size, _, _, _ = image.shape
         loc_reshaped = tf.reshape(loc, [batch_size, 1, 1, 2])
