@@ -9,6 +9,7 @@ Initial round implementations of the SP-cup 2022 challenge
 | Model name | config file | By | Accuracy | F1 (macro) | model checkpoint | eval checkpoint |
 |:---- | :----: | :----: | :----: | :----: | :----: | :----: |
 | sample-1 | conf1.json | @nipdep | 0.90 | 0.89 | - | - |
+| AASIST | - | @nipdep | 97.16 | - | - | - |
 
 ***
 _About_
