@@ -55,7 +55,7 @@ def preemphasis(signal,coeff=0.97):
     return np.append(signal[0],signal[1:]-coeff*signal[:-1])
 
 class AudiosetDataset(Dataset):
-    def __init__(self, dataset_json_file, audio_conf, label_csv=None):
+    def __init__(self, dataset_json_file, audio_conf):
         """
         Dataset that manages audio recordings
         :param audio_conf: Dictionary containing the audio loading and preprocessing settings
@@ -91,8 +91,8 @@ class AudiosetDataset(Dataset):
         if self.noise == True:
             print('now use noise augmentation')
 
-        self.index_dict = make_index_dict(label_csv)
-        self.label_num = len(self.index_dict)
+        # self.index_dict = make_index_dict(label_csv)
+        self.label_num = 6 #len(self.index_dict)
         print('number of classes is {:d}'.format(self.label_num))
 
     def _wav2fbank(self, filename, filename2=None):
@@ -167,19 +167,22 @@ class AudiosetDataset(Dataset):
             # initialize the label
             label_indices = np.zeros(self.label_num)
             # add sample 1 labels
-            for label_str in datum['labels'].split(','):
-                label_indices[int(self.index_dict[label_str])] += mix_lambda
+            # for label_str in datum['labels'].split(','):
+            #     label_indices[int(self.index_dict[label_str])] += mix_lambda
+            label_indices[datum['labels']] += mix_datum
             # add sample 2 labels
-            for label_str in mix_datum['labels'].split(','):
-                label_indices[int(self.index_dict[label_str])] += 1.0-mix_lambda
+            # for label_str in mix_datum['labels'].split(','):
+            #     label_indices[int(self.index_dict[label_str])] += 1.0-mix_lambda
+            label_indices[mix_datum['labels']] += (1.0 - mix_lambda)
             label_indices = torch.FloatTensor(label_indices)
         # if not do mixup
         else:
             datum = self.data[index]
             label_indices = np.zeros(self.label_num)
             fbank, mix_lambda = self._wav2fbank(datum['wav'])
-            for label_str in datum['labels'].split(','):
-                label_indices[int(self.index_dict[label_str])] = 1.0
+            # for label_str in datum['labels'].split(','):
+            #     label_indices[int(self.index_dict[label_str])] = 1.0
+            label_indices[datum['labels']] += 1.0
 
             label_indices = torch.FloatTensor(label_indices)
 

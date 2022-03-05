@@ -75,6 +75,7 @@ def train(audio_model, train_loader, test_loader, args):
         scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, list(range(5,26)), gamma=0.85)
         main_metrics = 'acc'
         loss_fn = nn.BCEWithLogitsLoss()
+        # loss_fn = nn.CrossEntropyLoss()
         warmup = False
     else:
         raise ValueError('unknown dataset, dataset should be in [audioset, speechcommands, esc50]')
@@ -300,7 +301,7 @@ def validate(audio_model, val_loader, args, epoch):
         stats = calculate_stats(audio_output, target)
 
         # save the prediction here
-        exp_dir = args.exp_dir
+        exp_dir = args.exp_dir # TODO : 
         if os.path.exists(exp_dir+'/predictions') == False:
             os.mkdir(exp_dir+'/predictions')
             np.savetxt(exp_dir+'/predictions/target.csv', target, delimiter=',')
