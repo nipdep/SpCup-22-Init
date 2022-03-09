@@ -1,0 +1,142 @@
+SBCNN with optimizer <tensorflow.python.keras.optimizer_v2.gradient_descent.SGD object at 0x0000020331BD6460> and 10 iterations lr = 0.001
+              precision    recall  f1-score   support
+
+     class_0       0.87      0.91      0.89       200
+     class_1       0.46      0.41      0.44       200
+     class_2       0.47      0.39      0.43       200
+     class_3       0.52      0.63      0.57       200
+     class_4       0.84      0.93      0.88       200
+     class_5       0.41      0.38      0.39       200
+
+    accuracy                           0.61      1200
+   macro avg       0.60      0.61      0.60      1200
+weighted avg       0.60      0.61      0.60      1200
+
+SBCNN with optimizer <tensorflow.python.keras.optimizer_v2.gradient_descent.SGD object at 0x0000020331BD6460> and 15 iterations lr = 0.001
+              precision    recall  f1-score   support
+
+     class_0       0.80      0.94      0.87       200
+     class_1       0.50      0.33      0.40       200
+     class_2       0.42      0.47      0.45       200
+     class_3       0.57      0.84      0.68       200
+     class_4       0.89      0.96      0.92       200
+     class_5       0.38      0.18      0.24       200
+
+    accuracy                           0.62      1200
+   macro avg       0.59      0.62      0.59      1200
+weighted avg       0.59      0.62      0.59      1200
+
+SBCNN with optimizer <tensorflow.python.keras.optimizer_v2.gradient_descent.SGD object at 0x000002035F379FA0> and 10 iterations lr = 0.01
+              precision    recall  f1-score   support
+
+     class_0       0.98      0.97      0.98       200
+     class_1       0.53      0.78      0.63       200
+     class_2       0.68      0.54      0.60       200
+     class_3       0.89      0.93      0.91       200
+     class_4       0.97      0.99      0.98       200
+     class_5       0.69      0.48      0.57       200
+
+    accuracy                           0.78      1200
+   macro avg       0.79      0.78      0.78      1200
+weighted avg       0.79      0.78      0.78      1200
+
+.
+SBCNN with optimizer <tensorflow.python.keras.optimizer_v2.gradient_descent.SGD object at 0x000002035F379FA0> and 15 iterations lr = 0.01
+              precision    recall  f1-score   support
+
+     class_0       0.99      0.99      0.99       200
+     class_1       0.62      0.79      0.70       200
+     class_2       0.74      0.62      0.67       200
+     class_3       0.89      0.93      0.91       200
+     class_4       0.97      0.98      0.98       200
+     class_5       0.75      0.62      0.68       200
+
+    accuracy                           0.82      1200
+   macro avg       0.83      0.82      0.82      1200
+weighted avg       0.83      0.82      0.82      1200
+
+SBCNN with optimizer <tensorflow.python.keras.optimizer_v2.gradient_descent.SGD object at 0x0000020307EC1CA0> and 10 iterations lr = 0.1
+              precision    recall  f1-score   support
+
+     class_0       0.99      0.95      0.97       200
+     class_1       0.80      0.51      0.62       200
+     class_2       0.60      0.71      0.65       200
+     class_3       0.89      0.93      0.91       200
+     class_4       0.95      0.99      0.97       200
+     class_5       0.64      0.73      0.68       200
+
+    accuracy                           0.80      1200
+   macro avg       0.81      0.80      0.80      1200
+weighted avg       0.81      0.80      0.80      1200
+
+SBCNN with optimizer <tensorflow.python.keras.optimizer_v2.gradient_descent.SGD object at 0x0000020307EC1CA0> and 15 iterations lr = 0.1
+              precision    recall  f1-score   support
+
+     class_0       1.00      0.96      0.98       200
+     class_1       0.69      0.74      0.72       200
+     class_2       0.73      0.67      0.70       200
+     class_3       0.90      0.93      0.92       200
+     class_4       0.95      0.99      0.97       200
+     class_5       0.68      0.66      0.67       200
+
+    accuracy                           0.83      1200
+   macro avg       0.83      0.83      0.82      1200
+weighted avg       0.83      0.83      0.82      1200
+
+SBCNN with optimizer <tensorflow.python.keras.optimizer_v2.gradient_descent.SGD object at 0x000002036FCDB400> and 10 iterations lr = 0.05
+              precision    recall  f1-score   support
+
+     class_0       0.96      1.00      0.98       200
+     class_1       0.78      0.64      0.70       200
+     class_2       0.63      0.66      0.64       200
+     class_3       0.98      0.83      0.90       200
+     class_4       0.98      0.98      0.98       200
+     class_5       0.59      0.73      0.65       200
+
+    accuracy                           0.81      1200
+   macro avg       0.82      0.81      0.81      1200
+weighted avg       0.82      0.81      0.81      1200
+
+SBCNN with optimizer <tensorflow.python.keras.optimizer_v2.gradient_descent.SGD object at 0x000002036FCDB400> and 15 iterations lr = 0.05
+              precision    recall  f1-score   support
+
+     class_0       0.99      0.99      0.99       200
+     class_1       0.74      0.77      0.75       200
+     class_2       0.78      0.73      0.76       200
+     class_3       0.96      0.92      0.94       200
+     class_4       0.98      0.99      0.99       200
+     class_5       0.71      0.74      0.73       200
+
+    accuracy                           0.86      1200
+   macro avg       0.86      0.86      0.86      1200
+weighted avg       0.86      0.86      0.86      1200
+
+WARNING:tensorflow:Please add `keras.layers.InputLayer` instead of `keras.Input` to Sequential model. `keras.Input` is intended to be used by Functional model.
+SBCNN with optimizer adam and 10 iterations
+              precision    recall  f1-score   support
+
+     class_0       0.97      0.99      0.98       200
+     class_1       0.83      0.75      0.79       200
+     class_2       0.76      0.73      0.75       200
+     class_3       0.93      0.97      0.95       200
+     class_4       0.99      0.98      0.99       200
+     class_5       0.75      0.80      0.78       200
+
+    accuracy                           0.87      1200
+   macro avg       0.87      0.87      0.87      1200
+weighted avg       0.87      0.87      0.87      1200
+
+WARNING:tensorflow:Please add `keras.layers.InputLayer` instead of `keras.Input` to Sequential model. `keras.Input` is intended to be used by Functional model.
+SBCNN with optimizer adam and 15 iterations
+              precision    recall  f1-score   support
+
+     class_0       0.99      0.99      0.99       200
+     class_1       0.77      0.79      0.78       200
+     class_2       0.84      0.64      0.73       200
+     class_3       0.86      0.97      0.91       200
+     class_4       0.98      0.96      0.97       200
+     class_5       0.71      0.78      0.74       200
+
+    accuracy                           0.86      1200
+   macro avg       0.86      0.86      0.85      1200
+weighted avg       0.86      0.86      0.85      1200
