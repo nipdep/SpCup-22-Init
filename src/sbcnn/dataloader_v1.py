@@ -80,7 +80,7 @@ class SpectDataset:
         X, y = label_df['track'].values, label_df['algorithm'].values
         # stratified split dataset into train-validation
         X_train, X_test, y_train, y_test = train_test_split(
-            X, y, stratify=y, test_size=split_ratio)
+            X, y, stratify=y, test_size=split_ratio, shuffle=True)
 
         X_train = tf.convert_to_tensor(X_train)
         y_train = tf.convert_to_tensor(y_train)
