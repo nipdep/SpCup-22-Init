@@ -11,10 +11,6 @@ Initial round implementations of the SP-cup 2022 challenge
 | sample-1 | conf1.json | @nipdep | 0.90 | 0.89 | - | - |
 
 ***
-_About_
-<details>
-  <summary> Team Info .. </summary>
-  
 ***
 __Datasets__
 _All links are direct downloadable links (can directly used in `wget` or `curl` commands)_
@@ -23,6 +19,13 @@ _All links are direct downloadable links (can directly used in `wget` or `curl` 
   [spcup_2022_eval_part1](https://www.dropbox.com/s/ftkyvwxgr9wl7jf/spcup_2022_eval_part1.zip?dl=1)
   [spcup_2022_eval_part2](https://www.dropbox.com/s/zylz07o2z0x308g/spcup_2022_eval_part2.zip?dl=1)
   [matlab script for distrotion](https://www.dropbox.com/s/b4uppyxwu0tn47k/matlab_scripts_augmentation.zip?dl=1)
+  
+  
+_About_
+<details>
+  <summary> Team Info .. </summary>
+  
+
   
 
 | Name | email | contant number | github @name |
