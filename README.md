@@ -18,7 +18,16 @@ _All links are direct downloadable links (can directly used in `wget` or `curl` 
 [spcup_2022_eval_part1](https://www.dropbox.com/s/ftkyvwxgr9wl7jf/spcup_2022_eval_part1.zip?dl=1) \
 [spcup_2022_eval_part2](https://www.dropbox.com/s/zylz07o2z0x308g/spcup_2022_eval_part2.zip?dl=1) \
 [matlab script for distrotion](https://www.dropbox.com/s/b4uppyxwu0tn47k/matlab_scripts_augmentation.zip?dl=1) 
-  
+
+***
+__Submission__ \
+[part-1 link](https://codalab.lisn.upsaclay.fr/competitions/2363?secret_key=f929425e-7748-4020-bd00-09a130f89d6c#participate-submit_results) \
+[part-2 link](
+https://codalab.lisn.upsaclay.fr/competitions/2577?secret_key=5e44bf0e-f481-47e3-9df9-95e73016f625#participate-submit_results
+) \
+CodaLab username : JaWick \
+CodaLab password : codacoda#26 \
+
 ***
 _About_
 <details>
