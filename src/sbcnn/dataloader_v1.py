@@ -4,7 +4,7 @@ import pandas as pd
 import tensorflow as tf
 import tensorflow.keras.backend as K
 from sklearn.model_selection import train_test_split
-
+from audiomentations import AddGaussianSNR
 
 class SpectDataset:
 
@@ -24,6 +24,7 @@ class SpectDataset:
         cpath = self.DATA_PATH + os.sep + file_path
         audio_binary = tf.io.read_file(cpath)
         waveform = self.decode_audio(audio_binary)
+        
         return waveform
 
     def waveform_mapper_v1(self, ds):
@@ -47,8 +48,10 @@ class SpectDataset:
         input_len = self.sptr_len
         waveform = waveform[:input_len]
         if self.add_noise:
-            noise = tf.random.normal(tf.shape(waveform), 0, 0.1)
-            waveform = tf.math.add(waveform, noise)
+            # noise = tf.random.normal(tf.shape(waveform), 0, 0.1)
+            # waveform = tf.math.add(waveform, noise)
+            augmenter = AddGaussianSNR(min_snr_in_db=15, max_snr_in_db=20, p=1.0)          
+            # waveform = augmenter(samples=waveform, sample_rate=16000)
         zero_padding = tf.zeros(
             [input_len] - tf.shape(waveform),
             dtype=tf.float32)
@@ -71,8 +74,8 @@ class SpectDataset:
     def spectrogram_mapper(self, ds):
         return ds.map(
             # map_func=lambda x: tf.py_function(func=self.get_spectrogram, inp=[x], Tout=(tf.float32, tf.int64)),
-            # map_func=lambda x,y: (tf.py_function(self.get_spectrogram, [x], tf.float32), y),
-            map_func=lambda x, y: (self.get_spectrogram(x), y),
+            map_func=lambda x,y: (tf.py_function(self.get_spectrogram, [x], tf.float32), y),
+            # map_func=lambda x, y: (self.get_spectrogram(x), y),
             num_parallel_calls=self.AUTOTUNE)
 
     def load_dataset(self, path, split_ratio):
