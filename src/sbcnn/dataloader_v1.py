@@ -5,13 +5,13 @@ import tensorflow as tf
 import tensorflow.keras.backend as K
 from sklearn.model_selection import train_test_split
 from audiomentations import AddGaussianSNR
-
+from pedalboard import Pedalboard, Reverb
 class SpectDataset:
 
-    def __init__(self, add_noise=False):
+    def __init__(self, add_noise=False, reverb=False):
         self.AUTOTUNE = tf.data.AUTOTUNE
         self.add_noise = add_noise
-
+        self.reverb = reverb
     def decode_audio(self, audio_binary):
         # Decode WAV-encoded audio files to `float32` tensors, normalized
         # to the [-1.0, 1.0] range. Return `float32` audio and a sample rate.
@@ -51,10 +51,15 @@ class SpectDataset:
             # noise = tf.random.normal(tf.shape(waveform), 0, 0.1)
             # waveform = tf.math.add(waveform, noise)
             augmenter = AddGaussianSNR(min_snr_in_db=15, max_snr_in_db=20, p=1.0)          
-            # waveform = augmenter(samples=waveform, sample_rate=16000)
+            waveform = augmenter(samples=waveform, sample_rate=16000)
+
+        if self.reverb:
+            board = Pedalboard([Reverb(room_size=0.5, damping=0.9, wet_level=0.1, dry_level=0.4)])
+            waveform = board(waveform, 16000)
         zero_padding = tf.zeros(
             [input_len] - tf.shape(waveform),
-            dtype=tf.float32)
+            dtype=tf.float32)    
+        
         # Cast the waveform tensors' dtype to float32.
         waveform = tf.cast(waveform, dtype=tf.float32)
         # Concatenate the waveform with `zero_padding`, which ensures all audio
