@@ -124,7 +124,7 @@ def white(N, state=None):
 def augment(data):
     if np.random.uniform(0, 1) > 0.95:
         wnoise = loguniform()
-        data = data + wnoise * white(len(data))
+        data = data + wnoise * white(len(data)) 
     if np.random.uniform(0, 1) > 0.95:
         stretch_val = np.random.uniform(0.9, 1.1)
         data = stretch(data, stretch_val)
