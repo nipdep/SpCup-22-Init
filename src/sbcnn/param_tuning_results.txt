@@ -1,0 +1,148 @@
+SBCNN with optimizer <tensorflow.python.keras.optimizer_v2.gradient_descent.SGD object at 0x00000166B3114C10> and 10 iterations lr = 0.001
+              precision    recall  f1-score   support
+
+     class_0       0.78      0.93      0.85       200
+     class_1       0.45      0.37      0.41       200
+     class_2       0.41      0.52      0.46       200
+     class_3       0.58      0.73      0.65       200
+     class_4       0.86      0.97      0.91       200
+     class_5       0.41      0.14      0.20       200
+
+    accuracy                           0.61      1200
+   macro avg       0.58      0.61      0.58      1200
+weighted avg       0.58      0.61      0.58      1200
+
+WARNING:tensorflow:Please add `keras.layers.InputLayer` instead of `keras.Input` to Sequential model. `keras.Input` is intended to be used by Functional model.
+SBCNN with optimizer <tensorflow.python.keras.optimizer_v2.gradient_descent.SGD object at 0x00000166B3114C10> and 15 iterations lr = 0.001
+              precision    recall  f1-score   support
+
+     class_0       0.88      0.94      0.91       200
+     class_1       0.46      0.65      0.54       200
+     class_2       0.50      0.40      0.44       200
+     class_3       0.66      0.84      0.74       200
+     class_4       0.92      0.96      0.94       200
+     class_5       0.51      0.22      0.31       200
+
+    accuracy                           0.67      1200
+   macro avg       0.66      0.67      0.65      1200
+weighted avg       0.66      0.67      0.65      1200
+
+WARNING:tensorflow:Please add `keras.layers.InputLayer` instead of `keras.Input` to Sequential model. `keras.Input` is intended to be used by Functional model.
+SBCNN with optimizer <tensorflow.python.keras.optimizer_v2.gradient_descent.SGD object at 0x00000166B3114EB0> and 10 iterations lr = 0.01
+              precision    recall  f1-score   support
+
+     class_0       0.99      0.96      0.97       200
+     class_1       0.66      0.81      0.73       200
+     class_2       0.70      0.61      0.65       200
+     class_3       0.85      0.96      0.90       200
+     class_4       0.99      0.99      0.99       200
+     class_5       0.76      0.61      0.68       200
+
+    accuracy                           0.82      1200
+   macro avg       0.82      0.82      0.82      1200
+weighted avg       0.82      0.82      0.82      1200
+
+WARNING:tensorflow:Please add `keras.layers.InputLayer` instead of `keras.Input` to Sequential model. `keras.Input` is intended to be used by Functional model.
+SBCNN with optimizer <tensorflow.python.keras.optimizer_v2.gradient_descent.SGD object at 0x00000166B3114EB0> and 15 iterations  lr = 0.01
+              precision    recall  f1-score   support
+
+     class_0       0.99      0.99      0.99       200
+     class_1       0.65      0.83      0.73       200
+     class_2       0.77      0.65      0.71       200
+     class_3       0.94      0.94      0.94       200
+     class_4       0.98      1.00      0.99       200
+     class_5       0.73      0.62      0.67       200
+
+    accuracy                           0.84      1200
+   macro avg       0.84      0.84      0.84      1200
+weighted avg       0.84      0.84      0.84      1200
+
+WARNING:tensorflow:Please add `keras.layers.InputLayer` instead of `keras.Input` to Sequential model. `keras.Input` is intended to be used by Functional model.
+SBCNN with optimizer <tensorflow.python.keras.optimizer_v2.gradient_descent.SGD object at 0x00000166A8DECB80> and 10 iterations lr = 0.1
+              precision    recall  f1-score   support
+
+     class_0       0.97      0.99      0.98       200
+     class_1       0.65      0.86      0.74       200
+     class_2       0.73      0.67      0.70       200
+     class_3       0.96      0.95      0.96       200
+     class_4       1.00      0.97      0.99       200
+     class_5       0.86      0.67      0.75       200
+
+    accuracy                           0.85      1200
+   macro avg       0.86      0.85      0.85      1200
+weighted avg       0.86      0.85      0.85      1200
+
+WARNING:tensorflow:Please add `keras.layers.InputLayer` instead of `keras.Input` to Sequential model. `keras.Input` is intended to be used by Functional model.
+SBCNN with optimizer <tensorflow.python.keras.optimizer_v2.gradient_descent.SGD object at 0x00000166A8DECB80> and 15 iterations lr = 0.1
+              precision    recall  f1-score   support
+
+     class_0       1.00      0.95      0.97       200
+     class_1       0.71      0.78      0.74       200
+     class_2       0.77      0.76      0.76       200
+     class_3       0.95      0.92      0.94       200
+     class_4       0.96      0.99      0.98       200
+     class_5       0.82      0.81      0.82       200
+
+    accuracy                           0.87      1200
+   macro avg       0.87      0.87      0.87      1200
+weighted avg       0.87      0.87      0.87      1200
+
+WARNING:tensorflow:Please add `keras.layers.InputLayer` instead of `keras.Input` to Sequential model. `keras.Input` is intended to be used by Functional model.
+SBCNN with optimizer <tensorflow.python.keras.optimizer_v2.gradient_descent.SGD object at 0x00000166A8DEC7C0> and 10 iterations lr = 0.05
+              precision    recall  f1-score   support
+
+     class_0       0.99      0.97      0.98       200
+     class_1       0.82      0.82      0.82       200
+     class_2       0.75      0.72      0.74       200
+     class_3       0.98      0.94      0.96       200
+     class_4       0.97      0.99      0.98       200
+     class_5       0.74      0.79      0.77       200
+
+    accuracy                           0.87      1200
+   macro avg       0.88      0.87      0.87      1200
+weighted avg       0.88      0.87      0.87      1200
+
+WARNING:tensorflow:Please add `keras.layers.InputLayer` instead of `keras.Input` to Sequential model. `keras.Input` is intended to be used by Functional model.
+SBCNN with optimizer <tensorflow.python.keras.optimizer_v2.gradient_descent.SGD object at 0x00000166A8DEC7C0> and 15 iterations lr = 0.05
+              precision    recall  f1-score   support
+
+     class_0       0.99      0.97      0.98       200
+     class_1       0.81      0.88      0.84       200
+     class_2       0.84      0.68      0.75       200
+     class_3       0.96      0.95      0.95       200
+     class_4       1.00      0.99      0.99       200
+     class_5       0.80      0.92      0.86       200
+
+    accuracy                           0.90      1200
+   macro avg       0.90      0.90      0.90      1200
+weighted avg       0.90      0.90      0.90      1200
+
+WARNING:tensorflow:Please add `keras.layers.InputLayer` instead of `keras.Input` to Sequential model. `keras.Input` is intended to be used by Functional model.
+SBCNN with optimizer adam and 10 iterations
+              precision    recall  f1-score   support
+
+     class_0       1.00      1.00      1.00       200
+     class_1       0.92      0.72      0.81       200
+     class_2       0.77      0.83      0.80       200
+     class_3       0.99      0.96      0.98       200
+     class_4       1.00      0.99      1.00       200
+     class_5       0.81      0.94      0.88       200
+
+    accuracy                           0.91      1200
+   macro avg       0.92      0.91      0.91      1200
+weighted avg       0.92      0.91      0.91      1200
+
+WARNING:tensorflow:Please add `keras.layers.InputLayer` instead of `keras.Input` to Sequential model. `keras.Input` is intended to be used by Functional model.
+SBCNN with optimizer adam and 15 iterations
+              precision    recall  f1-score   support
+
+     class_0       0.99      0.99      0.99       200
+     class_1       0.82      0.86      0.84       200
+     class_2       0.84      0.84      0.84       200
+     class_3       0.96      0.99      0.97       200
+     class_4       1.00      1.00      1.00       200
+     class_5       0.93      0.84      0.89       200
+
+    accuracy                           0.92      1200
+   macro avg       0.92      0.92      0.92      1200
+weighted avg       0.92      0.92      0.92      1200
