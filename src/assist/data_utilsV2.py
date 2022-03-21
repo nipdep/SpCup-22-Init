@@ -39,31 +39,33 @@ def add_SNR(signal, sr, snr_db, snr_noise):
     speech_power = signal.norm(p=2)
     noise_power = noise.norm(p=2)
 
-    snr = math.exp(snr_db / 10)
+    snr = 20 #math.exp(snr_db / 10)
     scale = snr * noise_power / speech_power
     return (scale * signal + noise) / 2
 
 # noise, _ = get_noise_sample()
 
 def get_sample(path, noise):
-    effects = [["remix", "1"]]
+    effects = [] #[["remix", "1"]]
+    # if random.choice([True, False]):
+    #     effects.append(["lowpass", "-1", "300"])
+    # if random.choice([True, False]):
+    #     effects.append(["rate", "16000"])
     if random.choice([True, False]):
-        effects.append(["lowpass", "-1", "300"])
-    if random.choice([True, False]):
-        effects.append(["rate", "8000"])
-    if random.choice([True, False]):
-        effects.append(["speed", "0.8"])
+        effects.append(["speed", "0.9"])
     if random.choice([True, False]):
         effects.append(["reverb", "-w"])
 
     ad_signal, sr = torchaudio.sox_effects.apply_effects_file(path, effects=effects, normalize=False)
     if ad_signal.shape[0] == 2:
-        ad_signal = ad_signal[1, :][None, :]
+        ad_signal = ad_signal[0, :][None, :]
     noise, _ = get_noise_sample(resample=sr)
     if random.choice([True, False]):
-        ad_signal = F.apply_codec(ad_signal, sr, format= "mp3", compression=-9)
+        ad_signal = F.apply_codec(ad_signal, sr, format= "mp3", compression=-4.5)
     if random.choice([True, False]):
         ad_signal = add_SNR(ad_signal, sr, 3, noise)
+    ad_signal = ad_signal.type(torch.float32)
+    ad_signal /= max(ad_signal.max(), abs(ad_signal.min()))
     return ad_signal, sr
 
 def genSpoof_list(dir_meta, is_train=False, is_eval=False):
@@ -104,18 +106,21 @@ def pad(x, max_len=64600):
     return padded_x
 
 
-def pad_random(x: np.ndarray, max_len: int = 64600):
+def pad_random(x, max_len: int = 64600):
     x_len = x.shape[0]
     # if duration is already long enough
+    res_tensor = torch.zeros(max_len)
     if x_len >= max_len:
-        stt = np.random.randint(x_len - max_len)
-        return x[stt:stt + max_len]
+        x = x[:max_len]
 
-    # if too short
-    num_repeats = int(max_len / x_len) + 1
-    padded_x = np.tile(x, (num_repeats))[:max_len]
-    return padded_x
+    res_tensor[:x.shape[0]] = x
+    return res_tensor
 
+def normalize(x):
+    m = -6.845978
+    s = 5.5654526
+    res = (x-m)/(s*2)
+    return res
 
 class Dataset_ASVspoof2019_train(Dataset):
     def __init__(self, list_IDs, labels, base_dir):
@@ -125,7 +130,7 @@ class Dataset_ASVspoof2019_train(Dataset):
         self.labels = labels
         self.base_dir = base_dir
         noise, _ = get_noise_sample()
-        self.noise = noise
+        self.noises = noise
         self.cut = 64600  # take ~4 sec audio (64600 samples)
 
     def __len__(self):
@@ -133,10 +138,12 @@ class Dataset_ASVspoof2019_train(Dataset):
 
     def __getitem__(self, index):
         key = self.list_IDs[index]
-        X, _ = get_sample(f"{self.base_dir}/{key}", self.noise)
-        X_pad = pad_random(X, self.cut)
-        x_inp = Tensor(X_pad)
+        X, _ = get_sample(f"{self.base_dir}/{key}", self.noises)
+        x_inp = pad_random(X[0, :], self.cut)
         y = self.labels[index]
+        # x_inp = normalize(x_inp)
+        # x_inp = x_inp.type(torch.float32)
+        # x_inp /= max(x_inp.max(), abs(x_inp.min()))
         return x_inp, y
 
 
@@ -156,4 +163,5 @@ class Dataset_ASVspoof2019_devNeval(Dataset):
         X, _ = sf.read(str(self.base_dir / f"{key}"))
         X_pad = pad(X, self.cut)
         x_inp = Tensor(X_pad)
+        # x_inp = normalize(x_inp)
         return x_inp, key
