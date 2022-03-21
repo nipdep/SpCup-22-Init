@@ -50,20 +50,20 @@ def add_SNR(signal, sr, snr_db, snr_noise):
     speech_power = signal.norm(p=2)
     noise_power = noise.norm(p=2)
 
-    snr = math.exp(snr_db / 10)
+    snr = 20 #math.exp(snr_db / 10)
     scale = snr * noise_power / speech_power
     return (scale * signal + noise) / 2
 
 # noise, _ = get_noise_sample()
 
 def get_sample(path, noise):
-    effects = [["remix", "1"]]
+    effects = [] # [["remix", "1"]]
+    # if random.choice([True, False]):
+    #     effects.append(["lowpass", "-1", "300"])
+    # if random.choice([True, False]):
+    #     effects.append(["rate", "8000"])
     if random.choice([True, False]):
-        effects.append(["lowpass", "-1", "300"])
-    if random.choice([True, False]):
-        effects.append(["rate", "8000"])
-    if random.choice([True, False]):
-        effects.append(["speed", "0.8"])
+        effects.append(["speed", "0.9"])
     if random.choice([True, False]):
         effects.append(["reverb", "-w"])
 
@@ -72,9 +72,12 @@ def get_sample(path, noise):
         ad_signal = ad_signal[1, :][None, :]
     noise, _ = get_noise_sample(resample=sr)
     if random.choice([True, False]):
-        ad_signal = F.apply_codec(ad_signal, sr, format= "mp3", compression=-9)
+        ad_signal = F.apply_codec(ad_signal, sr, format= "mp3", compression=-4.5)
     if random.choice([True, False]):
         ad_signal = add_SNR(ad_signal, sr, 3, noise)
+
+    ad_signal = ad_signal.type(torch.float32)
+    ad_signal /= max(ad_signal.max(), abs(ad_signal.min()))
     return ad_signal, sr
 
 def make_index_dict(label_csv):
@@ -299,7 +302,8 @@ class AudioTestDataset(Dataset):
         :param audio_conf: Dictionary containing the audio loading and preprocessing settings
         :param dataset_json_file
         """
-        self.data = list(dataset_df.loc[:, ['track']].values)
+
+        self.data = [i[0] for i in list(dataset_df.loc[:, ['track']].values)]
         self.audio_conf = audio_conf
         print(
             '---------------the {:s} dataloader---------------'.format(self.audio_conf.get('mode')))
@@ -338,8 +342,7 @@ class AudioTestDataset(Dataset):
     def _wav2fbank(self, filename, filename2=None):
         # mixup
         if filename2 == None:
-            # waveform, sr = torchaudio.load(filename)
-            waveform, sr = librosa.load(filename)
+            waveform, sr = torchaudio.load(filename)
             waveform = waveform - waveform.mean()
         # mixup
         else:
@@ -367,7 +370,6 @@ class AudioTestDataset(Dataset):
             mix_waveform = mix_lambda * waveform1 + \
                 (1 - mix_lambda) * waveform2
             waveform = mix_waveform - mix_waveform.mean()
-
 
         fbank = torchaudio.compliance.kaldi.fbank(waveform, htk_compat=True, sample_frequency=sr, use_energy=False,
                                                   window_type='hanning', num_mel_bins=self.melbins, dither=0.0, frame_shift=10)
@@ -422,7 +424,7 @@ class AudioTestDataset(Dataset):
         else:
             datum = self.data[index]
             # label_indices = np.zeros(self.label_num)
-            fbank, mix_lambda = self._wav2fbank(datum['wav'])
+            fbank, mix_lambda = self._wav2fbank(datum)
             # for label_str in datum['labels'].split(','):
             #     label_indices[int(self.index_dict[label_str])] = 1.0
             # label_indices[datum['labels']] += 1.0
@@ -430,14 +432,14 @@ class AudioTestDataset(Dataset):
             # label_indices = torch.FloatTensor(label_indices)
 
         # SpecAug, not do for eval set
-        freqm = torchaudio.transforms.FrequencyMasking(self.freqm)
-        timem = torchaudio.transforms.TimeMasking(self.timem)
-        fbank = torch.transpose(fbank, 0, 1)
-        if self.freqm != 0:
-            fbank = freqm(fbank)
-        if self.timem != 0:
-            fbank = timem(fbank)
-        fbank = torch.transpose(fbank, 0, 1)
+        # freqm = torchaudio.transforms.FrequencyMasking(self.freqm)
+        # timem = torchaudio.transforms.TimeMasking(self.timem)
+        # fbank = torch.transpose(fbank, 0, 1)
+        # if self.freqm != 0:
+        #     fbank = freqm(fbank)
+        # if self.timem != 0:
+        #     fbank = timem(fbank)
+        # fbank = torch.transpose(fbank, 0, 1)
 
         # normalize the input for both training and test
         if not self.skip_norm:

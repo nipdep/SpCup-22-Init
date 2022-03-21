@@ -103,7 +103,7 @@ class AudiosetDataset(Dataset):
         if self.noise == True:
             print('now use noise augmentation')
 
-        # self.index_dict = make_index_dict(label_csv)
+        # self.index_dict = make_index_dict(label_csv)SNR 
         self.label_num = 6  # len(self.index_dict)
         print('number of classes is {:d}'.format(self.label_num))
 
