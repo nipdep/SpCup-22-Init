@@ -291,8 +291,8 @@ class AudioTestDataset(Dataset):
         #     pass
 
         # TODO : @nipdep ## updated min-max norm
-        fbank = fbank.type(torch.float32)
-        fbank /= max(fbank.max(), abs(fbank.min()))
+        # fbank = fbank.type(torch.float32)
+        # fbank /= max(fbank.max(), abs(fbank.min()))
 
         # if self.noise == True:
         #     fbank = fbank + torch.rand(fbank.shape[0], fbank.shape[1]) * (self.noise_lvl**0.5)  # Add gaussian noise with configured noise level
