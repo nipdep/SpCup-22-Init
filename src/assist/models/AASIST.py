@@ -1,3 +1,4 @@
+# %% [code]
 """
 AASIST
 Copyright (c) 2021-present NAVER Corp.
@@ -523,7 +524,7 @@ class Model(nn.Module):
         self.pool_hS2 = GraphPool(pool_ratios[2], gat_dims[1], 0.3)
         self.pool_hT2 = GraphPool(pool_ratios[2], gat_dims[1], 0.3)
 
-        self.out_layer = nn.Linear(5 * gat_dims[1], 5)
+        self.out_layer = nn.Linear(5 * gat_dims[1], 6)
 
     def forward(self, x, Freq_aug=False):
 
