@@ -62,10 +62,22 @@ def get_sample(path, noise):
     #     effects.append(["lowpass", "-1", "300"])
     # if random.choice([True, False]):
     #     effects.append(["rate", "8000"])
+
     if random.choice([True, False]):
         effects.append(["speed", "0.9"])
     if random.choice([True, False]):
-        effects.append(["reverb", "-w"])
+        effects.append(["reverb", "-w", "0.25", "0.9"])
+    if random.choice([True, False]):
+        effects.append(["pitch", "-100"])
+    if random.choice([True, False]):
+        effects.append(["echo", "0.8", "0.88", "6", "0.4"])
+    if random.choice([True, False]):
+        effects.append(["dither", "-a"])
+    if random.choice([True, False]):
+        effects.append(["stretch", "1.1"])
+    if random.choice([True, False]):
+        effects.append(["gain", "-B"])
+    effects.append(["norm"])
 
     ad_signal, sr = torchaudio.sox_effects.apply_effects_file(path, effects=effects, normalize=False)
     if ad_signal.shape[0] == 2:
@@ -173,7 +185,7 @@ class AudiosetDataset(Dataset):
 
         waveform, sr = get_sample(filename, self.noises)
         waveform = waveform.type(torch.float32)
-        waveform = waveform - waveform.mean()
+        # waveform = waveform - waveform.mean()
 
         fbank = torchaudio.compliance.kaldi.fbank(waveform, htk_compat=True, sample_frequency=sr, use_energy=False,
                                                   window_type='hanning', num_mel_bins=self.melbins, dither=0.0, frame_shift=10)

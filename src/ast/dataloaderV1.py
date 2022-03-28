@@ -17,6 +17,7 @@ import numpy as np
 import torch
 import torch.nn.functional
 from torch.utils.data import Dataset
+import torchaudio.functional as F
 import random
 
 
@@ -58,6 +59,71 @@ def preemphasis(signal, coeff=0.97):
     :returns: the filtered signal.
     """
     return np.append(signal[0], signal[1:]-coeff*signal[:-1])
+
+
+def _get_sample(path, resample=None):
+    effects = [["remix", "1"]]
+    if resample:
+        effects.extend(
+            [
+                ["lowpass", f"{resample // 2}"],
+                ["rate", f"{resample}"],
+            ]
+        )
+    return torchaudio.sox_effects.apply_effects_file(path, effects=effects)
+
+# _SAMPLE_DIR = "_assets"
+# SAMPLE_NOISE_PATH = os.path.join(_SAMPLE_DIR, "bg.wav")
+SAMPLE_NOISE_PATH = './_assets/bg.wav'
+def get_noise_sample(*, resample=None):
+    return _get_sample(SAMPLE_NOISE_PATH, resample=resample)
+
+def add_SNR(signal, sr, snr_db, snr_noise):
+    noise = torch.zeros(signal.shape).type(torch.float32)
+    if snr_noise.shape[1]> signal.shape[1]:
+        snr_noise = snr_noise[:, :signal.shape[1]]
+    noise[:, :snr_noise.shape[1]] = snr_noise
+    signal = signal = signal.type(torch.float32)
+    speech_power = signal.norm(p=2)
+    noise_power = noise.norm(p=2)
+
+    snr = 20 #math.exp(snr_db / 10)
+    scale = snr * noise_power / speech_power
+    return (scale * signal + noise) / 2
+
+# noise, _ = get_noise_sample()
+
+def get_sample(path, noise):
+    effects = [] # [["remix", "1"]]
+    # if random.choice([True, False]):
+    #     effects.append(["lowpass", "-1", "300"])
+    # if random.choice([True, False]):
+    #     effects.append(["rate", "8000"])
+    if random.choice([True, False]):
+        effects.append(["speed", "0.9"])
+    if random.choice([True, False]):
+        effects.append(["reverb", "-w", "0.25", "0.9"])
+    if random.choice([True, False]):
+        effects.append(["pitch", "-100"])
+    if random.choice([True, False]):
+        effects.append(["echo", "0.8", "0.88", "6", "0.4"])
+    if random.choice([True, False]):
+        effects.append(["dither", "-a"])
+    if random.choice([True, False]):
+        effects.append(["stretch", "1.1"])
+    if random.choice([True, False]):
+        effects.append(["gain", "-B"])
+    effects.append(["norm"])
+
+    ad_signal, sr = torchaudio.sox_effects.apply_effects_file(path, effects=effects, normalize=False)
+    # if ad_signal.shape[0] == 2:
+    #     ad_signal = ad_signal[1, :][None, :]
+    # noise, _ = get_noise_sample(resample=sr)
+    # if random.choice([True, False]):
+    #     ad_signal = F.apply_codec(ad_signal, sr, format= "mp3", compression=-4.5)
+    # if random.choice([True, False]):
+    #     ad_signal = add_SNR(ad_signal, sr, 3, noise)
+    return ad_signal, sr
 
 
 class AudiosetDataset(Dataset):
@@ -109,7 +175,9 @@ class AudiosetDataset(Dataset):
 
     def _wav2fbank(self, filename):
         # mixup
-        waveform, sr = torchaudio.load(filename)
+        waveform, sr = get_sample(filename, self.noises)
+        waveform = waveform.type(torch.float32)
+        # waveform, sr = torchaudio.load(filename)
         # waveform = waveform - waveform.mean()  # TODO : @nipdep change
 
         # TODO : @nipdep ## Additional audio augmentations source : https://pytorch.org/audio/stable/transforms.html#fade
@@ -271,24 +339,6 @@ class AudioTestDataset(Dataset):
         datum = self.data[index]
         # label_indices = np.zeros(self.label_num)
         fbank, mix_lambda = self._wav2fbank(datum)
-
-
-        # SpecAug, not do for eval set
-        # freqm = torchaudio.transforms.FrequencyMasking(self.freqm)
-        # timem = torchaudio.transforms.TimeMasking(self.timem)
-        # fbank = torch.transpose(fbank, 0, 1)
-        # if self.freqm != 0:
-        #     fbank = freqm(fbank)
-        # if self.timem != 0:
-        #     fbank = timem(fbank)
-        # fbank = torch.transpose(fbank, 0, 1)
-
-        # normalize the input for both training and test
-        # if not self.skip_norm:
-        #     fbank = (fbank - self.norm_mean) / (self.norm_std * 2)
-        # # skip normalization the input if you are trying to get the normalization stats.
-        # else:
-        #     pass
 
         # TODO : @nipdep ## updated min-max norm
         # fbank = fbank.type(torch.float32)
