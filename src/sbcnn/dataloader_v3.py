@@ -38,6 +38,14 @@ class SpectTestDataset:
         # Zero-padding for an audio waveform with less than 16,000 samples.
         input_len = self.sptr_len
         waveform = waveform[:input_len]
+        if len(waveform) == 16000:
+            pos = 0
+            waveform = waveform[pos:pos+input_len]
+        else:
+            maxval = len(waveform)//2
+            pos = tf.random.uniform(shape=(), minval=1000, maxval=maxval, dtype=tf.int64)
+            input_len = tf.constant(input_len, dtype=tf.int64)
+            waveform = waveform[pos:pos+input_len]
 
         zero_padding = tf.zeros(
             [input_len] - tf.shape(waveform),
