@@ -56,40 +56,44 @@ def add_SNR(signal, sr, snr_db, snr_noise):
 
 # noise, _ = get_noise_sample()
 
-def get_sample(path, noise):
+def get_sample(path, noise, is_train, is_dest):
     effects = [] # [["remix", "1"]]
     # if random.choice([True, False]):
     #     effects.append(["lowpass", "-1", "300"])
     # if random.choice([True, False]):
     #     effects.append(["rate", "8000"])
+    
+    if is_train:
+        # if random.choice([True, False]):
+        #     effects.append(["speed", "0.9"])
+        if random.choice([True, False]):
+            effects.append(["pitch", "-10"])
+        # if random.choice([True, False]):
+        #     effects.append(["echo", "0.8", "0.88", "6", "0.4"])
+        if random.choice([True, False]):
+            effects.append(["dither", "-a"])
+        if random.choice([True, False]):
+            effects.append(["stretch", "1.1"])
+        # if random.choice([True, False]):
+        #     effects.append(["gain", "-B"])
+    if is_dest:
+        if random.choice([True, False]):
+            effects.append(["reverb", "-w", "0.25", "0.9"])
 
-    if random.choice([True, False]):
-        effects.append(["speed", "0.9"])
-    if random.choice([True, False]):
-        effects.append(["reverb", "-w", "0.25", "0.9"])
-    if random.choice([True, False]):
-        effects.append(["pitch", "-100"])
-    if random.choice([True, False]):
-        effects.append(["echo", "0.8", "0.88", "6", "0.4"])
-    if random.choice([True, False]):
-        effects.append(["dither", "-a"])
-    if random.choice([True, False]):
-        effects.append(["stretch", "1.1"])
-    if random.choice([True, False]):
-        effects.append(["gain", "-B"])
     effects.append(["norm"])
 
     ad_signal, sr = torchaudio.sox_effects.apply_effects_file(path, effects=effects, normalize=False)
-    if ad_signal.shape[0] == 2:
-        ad_signal = ad_signal[1, :][None, :]
-    noise, _ = get_noise_sample(resample=sr)
-    if random.choice([True, False]):
-        ad_signal = F.apply_codec(ad_signal, sr, format= "mp3", compression=-4.5)
-    if random.choice([True, False]):
-        ad_signal = add_SNR(ad_signal, sr, 3, noise)
+    if is_dest: 
+        if ad_signal.shape[0] == 2:
+            ad_signal = ad_signal[1, :][None, :]
+        noise, _ = get_noise_sample(resample=sr)
+        if random.choice([True, False]):
+            ad_signal = F.apply_codec(ad_signal, sr, format= "mp3", compression=-4.5)
+        if random.choice([True, False]):
+            ad_signal = add_SNR(ad_signal, sr, 3, noise)
 
-    ad_signal = ad_signal.type(torch.float32)
-    ad_signal /= max(ad_signal.max(), abs(ad_signal.min()))
+        ad_signal = ad_signal.type(torch.float32)
+        ad_signal /= 21
     return ad_signal, sr
 
 def make_index_dict(label_csv):
@@ -133,7 +137,7 @@ def preemphasis(signal, coeff=0.97):
 
 
 class AudiosetDataset(Dataset):
-    def __init__(self, dataset_json_file, audio_conf):
+    def __init__(self, dataset_json_file, audio_conf, is_train=False, is_dest=False):
         """
         Dataset that manages audio recordings
         :param audio_conf: Dictionary containing the audio loading and preprocessing settings
@@ -180,10 +184,12 @@ class AudiosetDataset(Dataset):
         print('number of classes is {:d}'.format(self.label_num))
         noise, _ = get_noise_sample()
         self.noises = noise
+        self.is_train = is_train
+        self.is_dest = is_dest
 
     def _wav2fbank(self, filename):
 
-        waveform, sr = get_sample(filename, self.noises)
+        waveform, sr = get_sample(filename, self.noises, self.is_train, self.is_dest)
         waveform = waveform.type(torch.float32)
         # waveform = waveform - waveform.mean()
 
@@ -296,8 +302,9 @@ class AudioTestDataset(Dataset):
         print('number of classes is {:d}'.format(self.label_num))
 
     def _wav2fbank(self, filename, filename2=None):
-        waveform, sr = torchaudio.load(filename)
-        waveform = waveform - waveform.mean()
+        waveform, sr = get_sample(filename, "", False, False)
+        waveform = waveform.type(torch.float32)
+        # waveform = waveform - waveform.mean()
 
 
         fbank = torchaudio.compliance.kaldi.fbank(waveform, htk_compat=True, sample_frequency=sr, use_energy=False,
