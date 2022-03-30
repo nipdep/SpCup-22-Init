@@ -301,7 +301,7 @@ class AudioTestDataset(Dataset):
         self.label_num = 6  # len(self.index_dict)
         print('number of classes is {:d}'.format(self.label_num))
 
-    def _wav2fbank(self, filename, filename2=None):
+    def _wav2fbank(self, filename):
         waveform, sr = get_sample(filename, "", False, False)
         waveform = waveform.type(torch.float32)
         # waveform = waveform - waveform.mean()
