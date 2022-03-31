@@ -161,9 +161,9 @@ class Dataset_ASVspoof2019_train(Dataset):
         X, _ = get_sample(f"{self.base_dir}/{key}", self.noises, self.is_train, self.is_dest)
         x_inp = pad_random(X[0, :], self.cut)
         y = self.labels[index]
-        # x_inp = normalize(x_inp)
-        x_inp = x_inp.type(torch.float32)
-        x_inp /= max(x_inp.max(), abs(x_inp.min()))
+        # # x_inp = normalize(x_inp)
+        # x_inp = x_inp.type(torch.float32)
+        # x_inp /= max(x_inp.max(), abs(x_inp.min()))
         return x_inp, y
 
 
@@ -180,7 +180,7 @@ class Dataset_ASVspoof2019_devNeval(Dataset):
 
     def __getitem__(self, index):
         key = self.list_IDs[index]
-        X, _ = sf.read(str(self.base_dir / f"{key}"), "", False, False)
+        X, _ = get_sample(str(self.base_dir / f"{key}"), "", False, False)
         X_pad = pad(X, self.cut)
         x_inp = Tensor(X_pad)
         # x_inp = normalize(x_inp)
